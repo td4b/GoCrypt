@@ -1,2 +1,2 @@
 ![](https://goreportcard.com/badge/github.com/TD4B/GoCrypt)
-![](https://github.com/TD4B/GoCrypt/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
