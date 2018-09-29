@@ -89,7 +89,6 @@ func main() {
                 case ".decrypt":
                         d, _ := os.Open(f.Name())
                         e, _ := os.Create(".encrypt")
-                        defer e.Close()
                         scanner := bufio.NewScanner(d)
                         for scanner.Scan() {
                                 fmt.Println("Decrypting File: " + scanner.Text())
