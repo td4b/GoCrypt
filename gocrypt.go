@@ -12,6 +12,9 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"syscall"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func createHash(key string) string {
@@ -65,9 +68,11 @@ func decryptFile(filename string, passphrase string) {
 
 func main() {
 
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("[PrivateKey]: ")
-	secret, _ := reader.ReadString('\n')
+	fmt.Print("[SecretKey]: ")
+	bytePassword, _ := terminal.ReadPassword(int(syscall.Stdin))
+	secret := string(bytePassword)
+	fmt.Println()
+
 	files, err := ioutil.ReadDir("./")
 	if err != nil {
 		log.Fatal(err)
