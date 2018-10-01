@@ -11,5 +11,5 @@
 # Planned / Additional Features
 - Better error/ file handling.
 - Intraplanary FIlesystem Interface (IPFS) to upload and store data securley.
-- CLI / Management Interface to bookmark you're secrets. 
+- CLI / Management Interface to keep track of you're files. 
 - Additional Master Encryption Key that is used as an additional security measure to double wrap the files with multiple layers of encryption. 
