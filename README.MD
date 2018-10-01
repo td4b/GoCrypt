@@ -8,4 +8,8 @@
 `Keep one in you're head.`<p>
 `With AES256 bit encryption, expedient they said!`
 
-
+# Planned / Additional Features
+- Better error/ file handling.
+- Intraplanary FIlesystem Interface (IPFS) to upload any secret data.
+- CLI / Management Interface to bookmark you're secrets. 
+- Additional Master Encryption Key that is used as an additional security measure to double wrap the files with multiple layers of encryption. 
