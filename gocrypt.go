@@ -67,6 +67,7 @@ func decryptFile(filename string, passphrase string) {
 }
 
 func main() {
+
 	fmt.Print("[SecretKey]: ")
 	bytePassword, _ := terminal.ReadPassword(int(syscall.Stdin))
 	secret := string(bytePassword)
