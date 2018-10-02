@@ -9,6 +9,7 @@
 `With AES256 bit encryption, expedient they said!`
 
 # Planned / Additional Features
-- Better error/ file handling.
+- Better error handling.
+- File handling.
 - Intraplanary FIlesystem Interface (IPFS) to upload and store data securley.
 - CLI / Management Interface to keep track of you're files. 
