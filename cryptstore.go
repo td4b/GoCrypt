@@ -11,10 +11,10 @@ import (
 )
 
 func main() {
-	fmt.Println("Storing encrypted files on the blockchain...")
-	// Where your local node is running on localhost:5001
+	fmt.Println("Storing encrypted files on the blockchain...Adding to Swarm.")
 	sh := shell.NewShell("localhost:5001")
 	e, _ := os.Open(".decrypt")
+  defer e.Close()
 	scanner := bufio.NewScanner(e)
 	for scanner.Scan() {
 		ef, _ := ioutil.ReadFile(scanner.Text())
@@ -23,10 +23,9 @@ func main() {
 			fmt.Fprintf(os.Stderr, "error: %s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("File %s Added to Swarm Hash: %s", scanner.Text(), hash)
-		fmt.Println("\nPulling copy of file from swarm.")
+		fmt.Printf("%s -> %s", scanner.Text(), hash)
+		fmt.Println("\nPulling copy of file(s) from swarm.")
 		sh.Get(hash, "./")
 	}
-
-	fmt.Println("\nProcess completed.")
+	fmt.Println("Process completed.")
 }
