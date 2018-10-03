@@ -3,12 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
-  "log"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
-  "github.com/tidwall/buntdb"
+
 	shell "github.com/ipfs/go-ipfs-api"
+	"github.com/tidwall/buntdb"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 	sh := shell.NewShell("localhost:5001")
 
 	e, _ := os.Open(".decrypt")
-  defer e.Close()
+	defer e.Close()
 
 	scanner := bufio.NewScanner(e)
 	for scanner.Scan() {
@@ -31,16 +32,27 @@ func main() {
 		}
 
 		fmt.Printf("%s -> %s", scanner.Text(), hash)
-    db, err := buntdb.Open("data.db")
-    if err != nil {
-    	log.Fatal(err)
-    }
-    err = db.Update(func(tx *buntdb.Tx) error {
-	  _, _, err := tx.Set(scanner.Text(), hash, nil)
-	  return err
-    })
-    defer db.Close()
-    
+		db, err := buntdb.Open("data.db")
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = db.View(func(tx *buntdb.Tx) error {
+			_, err := tx.Get(scanner.Text())
+			if err != nil {
+				return err
+			}
+			// issue here, find out why element is not added.
+			err = db.Update(func(tx *buntdb.Tx) error {
+				fmt.Println("test")
+				_, _, err := tx.Set(scanner.Text(), hash, nil)
+				return err
+			})
+
+			return nil
+		})
+
+		defer db.Close()
+
 	}
 
 	fmt.Println("Process completed.")
