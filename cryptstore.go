@@ -40,9 +40,7 @@ func main() {
 	  return err
     })
     defer db.Close()
-
-		fmt.Println("\nPulling copy of file(s) from swarm.")
-		sh.Get(hash, "./")
+    
 	}
 
 	fmt.Println("Process completed.")
