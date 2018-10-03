@@ -13,3 +13,5 @@
 - File handling.
 - Intraplanary FIlesystem Interface (IPFS) to upload and store data securley.
 - CLI / Management Interface to keep track of you're files. 
+
+

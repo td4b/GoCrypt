@@ -3,10 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
+  "log"
 	"io/ioutil"
 	"os"
 	"strings"
-
+  "github.com/tidwall/buntdb"
 	shell "github.com/ipfs/go-ipfs-api"
 )
 
@@ -20,7 +21,7 @@ func main() {
 
 	scanner := bufio.NewScanner(e)
 	for scanner.Scan() {
-    
+
 		ef, _ := ioutil.ReadFile(scanner.Text())
 		hash, err := sh.Add(strings.NewReader(string(ef)))
 
@@ -30,6 +31,16 @@ func main() {
 		}
 
 		fmt.Printf("%s -> %s", scanner.Text(), hash)
+    db, err := buntdb.Open("data.db")
+    if err != nil {
+    	log.Fatal(err)
+    }
+    err = db.Update(func(tx *buntdb.Tx) error {
+	  _, _, err := tx.Set(scanner.Text(), hash, nil)
+	  return err
+    })
+    defer db.Close()
+
 		fmt.Println("\nPulling copy of file(s) from swarm.")
 		sh.Get(hash, "./")
 	}
