@@ -22,8 +22,7 @@ func main() {
 
 	scanner := bufio.NewScanner(e)
 	for scanner.Scan() {
-
-		ef, _ := ioutil.ReadFile(scanner.Text())
+		ef, _ := ioutil.ReadFile(strings.Split(scanner.Text(), ":")[0])
 		hash, err := sh.Add(strings.NewReader(string(ef)))
 
 		if err != nil {
