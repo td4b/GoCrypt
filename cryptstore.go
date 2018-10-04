@@ -20,9 +20,6 @@ func main() {
 	e, _ := os.Open(".decrypt")
 
 	defer e.Close()
-=======
-  	defer e.Close()
-
 
 	scanner := bufio.NewScanner(e)
 	for scanner.Scan() {
