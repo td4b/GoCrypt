@@ -18,13 +18,11 @@ func main() {
 	sh := shell.NewShell("localhost:5001")
 
 	e, _ := os.Open(".decrypt")
-
 	defer e.Close()
 
 	scanner := bufio.NewScanner(e)
 	for scanner.Scan() {
-
-		ef, _ := ioutil.ReadFile(scanner.Text())
+		ef, _ := ioutil.ReadFile(strings.Split(scanner.Text(), ":")[0])
 		hash, err := sh.Add(strings.NewReader(string(ef)))
 
 		if err != nil {
@@ -37,6 +35,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		sh.Get(hash, "./")
 		err = db.View(func(tx *buntdb.Tx) error {
 			_, err := tx.Get(scanner.Text())
 			if err != nil {
