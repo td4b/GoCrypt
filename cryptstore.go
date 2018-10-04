@@ -18,7 +18,6 @@ func main() {
 	sh := shell.NewShell("localhost:5001")
 
 	e, _ := os.Open(".decrypt")
-
 	defer e.Close()
 
 	scanner := bufio.NewScanner(e)
@@ -37,6 +36,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		sh.Get(hash, "./")
 		err = db.View(func(tx *buntdb.Tx) error {
 			_, err := tx.Get(scanner.Text())
 			if err != nil {

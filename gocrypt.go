@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/md5"
 	"crypto/rand"
+	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -27,7 +27,7 @@ func createHash(key string) string {
 }
 
 func md5Hash(key string) string {
-	hasher := md5.New()
+	hasher := sha1.New()
 	hasher.Write([]byte(key))
 	hash := hex.EncodeToString(hasher.Sum(nil))
 	return hash
