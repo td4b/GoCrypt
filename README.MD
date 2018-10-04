@@ -9,7 +9,7 @@
 `With AES256 bit encryption, expedient they said!`
 
 # Description
-This is a CLI tool for encyrpting and uploading files to the IPFS blockchain network. The tool also generates unique file signatures and records them in a local database for one to keep track of the files.
+This is a CLI tool for encyrpting and uploading files to the IPFS blockchain network. The tool also generates unique file signatures and records them in a local database for one to keep track of the files. Because of the way AES256 encyrption is implemented a second chain is needed to keep track and record metadata about the content/information of a file. This would be the "Public" or non-confidential metadata assosciated with a file so a client can identify it's validaity before attempting to decrypt the true file structure. Of course the data will be impossible to decrypt unless the client has the private key (AES 256).
 
 # Planned / Additional Features
 - Better error handling.
