@@ -13,5 +13,6 @@
 - File handling.
 - Intraplanary FIlesystem Interface (IPFS) to upload and store data securley.
 - CLI / Management Interface to keep track of you're files. 
+- API Interface to easily view storage metadata information and query attributes of specific files.
 
 
