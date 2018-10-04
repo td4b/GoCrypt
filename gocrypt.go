@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/md5"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
@@ -12,6 +13,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 	"syscall"
 
 	"golang.org/x/crypto/ssh/terminal"
@@ -22,6 +24,22 @@ func createHash(key string) string {
 	hasher.Write([]byte(key))
 	hash := hex.EncodeToString(hasher.Sum(nil))
 	return hash[0 : len(hash)/2]
+}
+
+func md5Hash(key string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(key))
+	hash := hex.EncodeToString(hasher.Sum(nil))
+	return hash
+}
+
+func signature(data []byte) string {
+	factor := len(data) / 6
+	var sig string
+	for i := 1; i <= 6; i++ {
+		sig += string(data[factor*i : len(data)])
+	}
+	return md5Hash(sig)
 }
 
 func encrypt(data []byte, passphrase string) []byte {
@@ -51,11 +69,12 @@ func decrypt(data []byte, passphrase string) []byte {
 	return plaintext
 }
 
-func encryptFile(filename string, passphrase string) {
+func encryptFile(filename string, passphrase string) []byte {
 	data, _ := ioutil.ReadFile(filename)
 	f, _ := os.Create(filename)
 	defer f.Close()
 	f.Write(encrypt(data, passphrase))
+	return data
 }
 
 func decryptFile(filename string, passphrase string) {
@@ -85,9 +104,10 @@ func main() {
 			d, _ := os.Create(".decrypt")
 			scanner := bufio.NewScanner(e)
 			for scanner.Scan() {
-				encryptFile(scanner.Text(), secret)
-				fmt.Println("Encrypting File: " + scanner.Text())
-				d.Write([]byte(scanner.Text()))
+				raw_data := encryptFile(scanner.Text(), secret)
+				fmt.Println("Encrypting File: " + scanner.Text() + " Signature: " + signature(raw_data))
+				filename := scanner.Text() + ":" + signature(raw_data)
+				d.Write([]byte(filename))
 			}
 			d.Close()
 			e.Close()
@@ -97,9 +117,12 @@ func main() {
 			e, _ := os.Create(".encrypt")
 			scanner := bufio.NewScanner(d)
 			for scanner.Scan() {
-				decryptFile(scanner.Text(), secret)
-				fmt.Println("Decrypting File: " + scanner.Text())
-				e.Write([]byte(scanner.Text()))
+				filename := strings.Split(scanner.Text(), ":")[0]
+				decryptFile(filename, secret)
+				name := strings.Split(scanner.Text(), ":")[0]
+				signature := strings.Split(scanner.Text(), ":")[1]
+				fmt.Println("Decrypting File: " + name + " Signature: " + signature)
+				e.Write([]byte(filename))
 			}
 			e.Close()
 			d.Close()
