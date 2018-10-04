@@ -55,5 +55,5 @@ func main() {
 
 	}
 
-	fmt.Println("Process completed.")
+	fmt.Println("\nProcess completed.")
 }
