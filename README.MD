@@ -1,4 +1,5 @@
 # GoCrypt
+**Work In Progress :) Placeholder Icon++
 <p align="center">
 <img src="https://github.com/td4b/GoCrypt/blob/master/image/key_icon-01.png" width="100" height="100">
 </p>
