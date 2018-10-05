@@ -26,7 +26,7 @@ func createHash(key string) string {
 	return hash[0 : len(hash)/2]
 }
 
-func md5Hash(key string) string {
+func sha1Hash(key string) string {
 	hasher := sha1.New()
 	hasher.Write([]byte(key))
 	hash := hex.EncodeToString(hasher.Sum(nil))
@@ -39,7 +39,7 @@ func signature(data []byte) string {
 	for i := 1; i <= 6; i++ {
 		sig += string(data[factor*i : len(data)])
 	}
-	return md5Hash(sig)
+	return sha1Hash(sig)
 }
 
 func encrypt(data []byte, passphrase string) []byte {

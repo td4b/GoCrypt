@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-
+	// will break these up into functions eventually.
 	fmt.Println("Storing encrypted files on the blockchain...Adding to Swarm.")
 	sh := shell.NewShell("localhost:5001")
 
