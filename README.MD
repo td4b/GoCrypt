@@ -1,5 +1,5 @@
 # GoCrypt
-## Work In Progress :)
+![](https://github.com/td4b/GoCrypt/blob/master/image/key_icon-01.png)
 <p align="center">
 <img style="float: center;" src="https://goreportcard.com/badge/github.com/TD4B/GoCrypt">
 <img style="float: center;" src="https://img.shields.io/badge/License-MIT-yellow.svg">
