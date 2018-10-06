@@ -37,7 +37,7 @@ func signature(data []byte) string {
 	factor := len(data) / 256
 	var sig string
 	for i := 1; i <= 256; i++ {
-		sig += string(data[factor*i:])
+		sig += string(data[factor*i : len(data)])
 	}
 	return sha1Hash(sig)
 }
@@ -106,7 +106,7 @@ func main() {
 			for scanner.Scan() {
 				rawdata := encryptFile(scanner.Text(), secret)
 				fmt.Println("Encrypting File: " + scanner.Text() + " Signature: " + signature(rawdata))
-				filename := scanner.Text() + ":" + signature(raw_data)
+				filename := scanner.Text() + ":" + signature(rawdata)
 				d.Write([]byte(filename))
 			}
 			d.Close()
@@ -130,4 +130,3 @@ func main() {
 		}
 	}
 }
-
