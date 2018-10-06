@@ -1,16 +1,16 @@
 package main
 
 import (
-	"log"
-	"net/http"
 	"database/sql"
 	"encoding/json"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
+	"net/http"
 )
 
 type Data struct {
-  File    string
-  Hash    string
+	File string
+	Hash string
 }
 
 func apicall(w http.ResponseWriter, r *http.Request) {
@@ -29,11 +29,11 @@ func apicall(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		data := Data{fileid,ipfshash}
+		data := Data{fileid, ipfshash}
 		js, err := json.Marshal(data)
 		if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 
 		w.Header().Set("Content-Type", "application/json")
