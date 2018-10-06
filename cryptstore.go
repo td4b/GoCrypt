@@ -4,15 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"log"
+	"os"
 	"strings"
 
-	shell "github.com/ipfs/go-ipfs-api"
 	"database/sql"
+	shell "github.com/ipfs/go-ipfs-api"
 	_ "github.com/mattn/go-sqlite3"
 )
-
 
 func get(key string) bool {
 	db, _ := sql.Open("sqlite3", "./data.db")
@@ -66,13 +65,13 @@ func main() {
 			os.Exit(1)
 		}
 
-		fmt.Printf("(%d) File:Hash = %s \n(%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
+		fmt.Printf("(%d) File:Hash = %s (%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
 		if get(scanner.Text()) == true {
 			continue
 		} else {
-			update(count,scanner.Text(),hash)
+			update(count, scanner.Text(), hash)
 		}
 		count++
 	}
-	fmt.Println("\nProcess completed.")
+	fmt.Println("Process completed.")
 }
