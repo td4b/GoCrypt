@@ -37,7 +37,7 @@ func signature(data []byte) string {
 	factor := len(data) / 256
 	var sig string
 	for i := 1; i <= 256; i++ {
-		sig += string(data[factor*i : len(data)])
+		sig += string(data[factor*i:])
 	}
 	return sha1Hash(sig)
 }
@@ -130,3 +130,4 @@ func main() {
 		}
 	}
 }
+
