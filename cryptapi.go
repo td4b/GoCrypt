@@ -1,26 +1,44 @@
 package main
 
 import (
-	"fmt"
-	"github.com/tidwall/buntdb"
 	"log"
 	"net/http"
+	"database/sql"
+	"encoding/json"
+	_ "github.com/mattn/go-sqlite3"
 )
 
+type Data struct {
+  File    string
+  Hash    string
+}
+
 func apicall(w http.ResponseWriter, r *http.Request) {
-	db, err := buntdb.Open("data.db")
+	db, _ := sql.Open("sqlite3", "./data.db")
+	defer db.Close()
+	rows, err := db.Query("select id, fileid, ipfshash from filemaps")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
-	err = db.View(func(tx *buntdb.Tx) error {
-		tx.Ascend("", func(key, value string) bool {
-			data := "key: " + string(key) + " value: " + string(value)
-			fmt.Fprintf(w, data)
-			return true
-		})
-		return err
-	})
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		var fileid string
+		var ipfshash string
+		err = rows.Scan(&id, &fileid, &ipfshash)
+		if err != nil {
+			log.Fatal(err)
+		}
+		data := Data{fileid,ipfshash}
+		js, err := json.Marshal(data)
+		if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+	}
 }
 
 func main() {
