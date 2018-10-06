@@ -14,4 +14,3 @@ func main() {
 	query, _ := db.Prepare(sqlStmt)
 	query.Exec()
 }
-

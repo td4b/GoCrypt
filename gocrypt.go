@@ -37,7 +37,7 @@ func signature(data []byte) string {
 	factor := len(data) / 256
 	var sig string
 	for i := 1; i <= 256; i++ {
-		sig += string(data[factor*i:])
+		sig += string(data[factor*i : len(data)])
 	}
 	return sha1Hash(sig)
 }
@@ -104,8 +104,8 @@ func main() {
 			d, _ := os.Create(".decrypt")
 			scanner := bufio.NewScanner(e)
 			for scanner.Scan() {
-				raw_data := encryptFile(scanner.Text(), secret)
-				fmt.Println("Encrypting File: " + scanner.Text() + " Signature: " + signature(raw_data))
+				rawdata := encryptFile(scanner.Text(), secret)
+				fmt.Println("Encrypting File: " + scanner.Text() + " Signature: " + signature(rawdata))
 				filename := scanner.Text() + ":" + signature(raw_data)
 				d.Write([]byte(filename))
 			}
@@ -130,4 +130,3 @@ func main() {
 		}
 	}
 }
-

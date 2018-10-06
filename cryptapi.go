@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-type Data struct {
+type jsondata struct {
 	File string
 	Hash string
 }
@@ -29,7 +29,7 @@ func apicall(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		data := Data{fileid, ipfshash}
+		data := jsondata{fileid, ipfshash}
 		js, err := json.Marshal(data)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -45,4 +45,3 @@ func main() {
 	http.HandleFunc("/api/", apicall)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
-
