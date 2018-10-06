@@ -4,13 +4,48 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
+	"log"
 	"strings"
 
 	shell "github.com/ipfs/go-ipfs-api"
-	"github.com/tidwall/buntdb"
+	"database/sql"
+	_ "github.com/mattn/go-sqlite3"
 )
+
+
+func get(key string) bool {
+	db, _ := sql.Open("sqlite3", "./data.db")
+	defer db.Close()
+	rows, err := db.Query("select id, fileid, ipfshash from filemaps")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		var fileid string
+		var ipfshash string
+		err = rows.Scan(&id, &fileid, &ipfshash)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if key == fileid {
+			fmt.Println("\n" + fileid + " / " + ipfshash)
+			return true
+		}
+	}
+	return false
+}
+
+func update(id int, key string, value string) {
+	db, _ := sql.Open("sqlite3", "./data.db")
+	defer db.Close()
+	query, _ := db.Prepare("insert into filemaps (id, fileid, ipfshash) values (?, ?, ?)")
+	defer query.Close()
+	query.Exec(id, key, value)
+
+}
 
 func main() {
 
@@ -21,6 +56,7 @@ func main() {
 	defer e.Close()
 
 	scanner := bufio.NewScanner(e)
+	count := 0
 	for scanner.Scan() {
 		ef, _ := ioutil.ReadFile(strings.Split(scanner.Text(), ":")[0])
 		hash, err := sh.Add(strings.NewReader(string(ef)))
@@ -30,30 +66,13 @@ func main() {
 			os.Exit(1)
 		}
 
-		fmt.Printf("%s -> %s", scanner.Text(), hash)
-		db, err := buntdb.Open("data.db")
-		if err != nil {
-			log.Fatal(err)
+		fmt.Printf("(%d) File:Hash = %s \n(%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
+		if get(scanner.Text()) == true {
+			continue
+		} else {
+			update(count,scanner.Text(),hash)
 		}
-		sh.Get(hash, "./")
-		err = db.View(func(tx *buntdb.Tx) error {
-			_, err := tx.Get(scanner.Text())
-			if err != nil {
-				return err
-			}
-			// issue here, find out why element is not added.
-			err = db.Update(func(tx *buntdb.Tx) error {
-				fmt.Println("test")
-				_, _, err := tx.Set(scanner.Text(), hash, nil)
-				return err
-			})
-
-			return nil
-		})
-
-		defer db.Close()
-
+		count++
 	}
-
 	fmt.Println("\nProcess completed.")
 }
