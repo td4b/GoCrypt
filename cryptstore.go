@@ -30,7 +30,6 @@ func get(key string) bool {
 			log.Fatal(err)
 		}
 		if key == fileid {
-			fmt.Println("\n" + fileid + " / " + ipfshash)
 			return true
 		}
 	}
@@ -65,7 +64,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		fmt.Printf("(%d) File:Hash = %s (%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
+		fmt.Printf("(%d) File:Hash = %s \n(%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
 		if get(scanner.Text()) == true {
 			continue
 		} else {
