@@ -2,13 +2,13 @@ package main
 
 import (
 	"bufio"
+	"database/sql"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 
-	"database/sql"
 	shell "github.com/ipfs/go-ipfs-api"
 	_ "github.com/mattn/go-sqlite3"
 )
