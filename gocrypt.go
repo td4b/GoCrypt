@@ -106,7 +106,7 @@ func main() {
 			for scanner.Scan() {
 				rawdata := encryptFile(scanner.Text(), secret)
 				fmt.Println("Encrypting File: " + scanner.Text() + " Signature: " + signature(rawdata))
-				filename := scanner.Text() + ":" + signature(rawdata)
+				filename := scanner.Text() + ":" + signature(rawdata) + "\n"
 				d.Write([]byte(filename))
 			}
 			d.Close()

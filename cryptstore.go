@@ -64,7 +64,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		fmt.Printf("(%d) File:Hash = %s \n(%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
+		fmt.Printf("\n(%d) File:Hash = %s \n(%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
 		if get(scanner.Text()) == true {
 			continue
 		} else {
@@ -72,5 +72,5 @@ func main() {
 		}
 		count++
 	}
-	fmt.Println("Process completed.")
+	fmt.Println("\nProcess completed.")
 }
