@@ -15,12 +15,6 @@
 This is a CLI tool for encyrpting and uploading files to the IPFS blockchain network. The tool also generates unique file signatures and records them in a local database for one to keep track of the files. The reason behind this is due to the nature of AES256, at some point potentially a second block chain could be leveraged to track (file uniqueness). This would be the "Public" or non-confidential metadata assosciated with a file. The data will be nearly impossible to decrypt unless the client has the private key since the encryption method is symmetric (AES256).
 
 # Planned / Additional Features
-- Better error handling.
-- File handling.
-- Intraplanary FIlesystem Interface (IPFS) to upload and store data securley.
-- CLI / Management Interface to keep track of you're files. 
+- File handling / API. Would like to implement the ability to upload the data from the Client side.
 - API Interface to easily view storage metadata information and query attributes of specific files.
 - CLI tools, arguments and constructs.
-- GUI Interface for managing files.
-
-
