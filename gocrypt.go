@@ -91,7 +91,15 @@ func main() {
 	bytePassword, _ := terminal.ReadPassword(int(syscall.Stdin))
 	secret := string(bytePassword)
 	fmt.Println()
-
+	
+	fmt.Print("[Verify SecretKey]: ")
+	vrfybytePassword, _ := terminal.ReadPassword(int(syscall.Stdin))
+	vrfysecret := string(vrfybytePassword)
+	
+	if (vrfysecret != secret) {
+		return 0
+	}
+	
 	files, err := ioutil.ReadDir("./")
 	if err != nil {
 		log.Fatal(err)
