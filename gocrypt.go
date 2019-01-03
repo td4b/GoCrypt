@@ -97,7 +97,7 @@ func main() {
 	vrfysecret := string(vrfybytePassword)
 	
 	if (vrfysecret != secret) {
-		return 0
+		return
 	}
 	
 	files, err := ioutil.ReadDir("./")
