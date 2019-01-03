@@ -97,6 +97,7 @@ func main() {
 	vrfysecret := string(vrfybytePassword)
 	
 	if (vrfysecret != secret) {
+		fmt.Print("Error, Key Verification Failed.")
 		return
 	}
 	
@@ -113,7 +114,7 @@ func main() {
 			scanner := bufio.NewScanner(e)
 			for scanner.Scan() {
 				rawdata := encryptFile(scanner.Text(), secret)
-				fmt.Println("Encrypting File: " + scanner.Text() + " Signature: " + signature(rawdata))
+				fmt.Println("\nEncrypting File: " + scanner.Text() + " Signature: " + signature(rawdata))
 				filename := scanner.Text() + ":" + signature(rawdata) + "\n"
 				d.Write([]byte(filename))
 			}
@@ -129,7 +130,7 @@ func main() {
 				decryptFile(filename, secret)
 				name := strings.Split(scanner.Text(), ":")[0]
 				signature := strings.Split(scanner.Text(), ":")[1]
-				fmt.Println("Decrypting File: " + name + " Signature: " + signature)
+				fmt.Println("\nDecrypting File: " + name + " Signature: " + signature)
 				e.Write([]byte(filename))
 			}
 			e.Close()
