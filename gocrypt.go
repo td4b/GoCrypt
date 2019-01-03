@@ -97,7 +97,7 @@ func main() {
 	vrfysecret := string(vrfybytePassword)
 	
 	if (vrfysecret != secret) {
-		fmt.Print("Error, Key Verification Failed.")
+		fmt.Print("\nError, Key Verification Failed.\n")
 		return
 	}
 	
@@ -131,7 +131,7 @@ func main() {
 				name := strings.Split(scanner.Text(), ":")[0]
 				signature := strings.Split(scanner.Text(), ":")[1]
 				fmt.Println("\nDecrypting File: " + name + " Signature: " + signature)
-				e.Write([]byte(filename) + "\n")
+				e.Write([]byte(filename + "\n"))
 			}
 			e.Close()
 			d.Close()
