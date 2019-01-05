@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 type jsondata struct {
@@ -15,13 +15,19 @@ type jsondata struct {
 }
 
 func apicall(w http.ResponseWriter, r *http.Request) {
-	db, _ := sql.Open("sqlite3", "./data.db")
+	connStr := "user=docker password=docker dbname=filehashes sslmode=disable"
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer db.Close()
-	rows, err := db.Query("select id, fileid, ipfshash from filemaps")
+
+	rows, err := db.Query("SELECT id, fileid, ipfshash FROM filemaps")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
+
 	for rows.Next() {
 		var id int
 		var fileid string

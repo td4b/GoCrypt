@@ -10,13 +10,17 @@ import (
 	"strings"
 
 	shell "github.com/ipfs/go-ipfs-api"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 func get(key string) bool {
-	db, _ := sql.Open("sqlite3", "./data.db")
+	connStr := "user=docker password=docker dbname=filehashes sslmode=disable"
+	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
-	rows, err := db.Query("select id, fileid, ipfshash from filemaps")
+	if err != nil {
+		log.Fatal(err)
+	}
+	rows, err := db.Query("SELECT id, fileid, ipfshash FROM filemaps")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,12 +41,20 @@ func get(key string) bool {
 }
 
 func update(id int, key string, value string) {
-	db, _ := sql.Open("sqlite3", "./data.db")
+	connStr := "user=docker password=docker dbname=filehashes sslmode=disable"
+	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
-	query, _ := db.Prepare("insert into filemaps (id, fileid, ipfshash) values (?, ?, ?)")
-	defer query.Close()
-	query.Exec(id, key, value)
-
+	if err != nil {
+		log.Fatal(err)
+	}
+	sqlStatement := `
+	INSERT INTO filemaps (id, fileid, ipfshash)
+	VALUES ($1, $2, $3)
+	RETURNING id`
+	err = db.QueryRow(sqlStatement, id, key, value).Scan(&id)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func main() {

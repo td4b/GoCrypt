@@ -4,6 +4,8 @@ services:
     container_name: db
     build: ./database/.
     image: postgres:10.1
+    ports:
+      - 5432:5432
   api:
     container_name: api
     image: golang:latest
@@ -13,3 +15,10 @@ services:
     depends_on:
       - db
     # entrypoint: ["/usr/local/src/security_monkey/docker/api-start.sh"]
+  datanode:
+    container_name: ipfs_node
+    image: ipfs/go-ipfs:latest
+    ports:
+      - 4001:4001
+      - 5001:5001
+      - 8080:8080
