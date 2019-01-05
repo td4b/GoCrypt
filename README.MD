@@ -29,6 +29,26 @@ This is a CLI tool for encyrpting and uploading files to the IPFS blockchain net
     |Bulk Storage Node (Go|IPFS+----+      |
     +--------------------------+    +------+
 
+# Done.
+- Migrated IPFS Node to Container System.
+- Migrated Postgres Services to Container Service.
+- Updated golang routines to support Postgres Container Service.
+
+# TODO.
+
+@@ GoCrypt @@
+- Migrate additional Services over to Containers.
+- Need to implement multiple API's & MicroServices to suppor this.
+
+@@ IPFS @@
+- Configure Data Caching.
+- Configure Private Node Network (SSL Verification). 
+
+@@ Database @@
+- Configure SSL Security.
+- Add in Database security via Generated ENV userid & password variables when DB is spun up.
+- Enable Database Replication & Configure Cluster Network.
+
 # Planned / Additional Features
 - Convert each service into a microservice!
 - File handling / API. Would like to implement the ability to upload the data from the Client side.
