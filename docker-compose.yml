@@ -1,0 +1,15 @@
+version: '2'
+services:
+  db:
+    container_name: db
+    build: ./database/.
+    image: postgres:10.1
+  api:
+    container_name: api
+    image: golang:latest
+    build: .
+    volumes_from:
+      - db
+    depends_on:
+      - db
+    # entrypoint: ["/usr/local/src/security_monkey/docker/api-start.sh"]
