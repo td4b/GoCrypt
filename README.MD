@@ -30,6 +30,7 @@ This is a CLI tool for encyrpting and uploading files to the IPFS blockchain net
     +--------------------------+    +------+
 
 # Planned / Additional Features
+- Convert each service into a microservice!
 - File handling / API. Would like to implement the ability to upload the data from the Client side.
 - Client Side Mutual Authentication to allow connectivity to encryption/storage service. 
 - API Interface to easily view storage metadata information and query attributes of specific files.
