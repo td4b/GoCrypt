@@ -14,6 +14,21 @@
 # Description
 This is a CLI tool for encyrpting and uploading files to the IPFS blockchain network. The tool also generates unique file signatures and records them in a local database for one to keep track of the files. The reason behind this is due to the nature of AES256, at some point potentially a second block chain could be leveraged to track (file uniqueness). This would be the "Public" or non-confidential metadata assosciated with a file. The data will be nearly impossible to decrypt unless the client has the private key since the encryption method is symmetric (AES256).
 
+# MicroServices Based Network
+
+    +--------------------------+    +------+
+    |Postgres (Metadata Service+----+      |
+    +--------------------------+    |      |
+    +--------------------------+    |      |
+    |API                       +----+      |
+    +--------------------------+    | RTR  |
+    +--------------------------+    |      |
+    |Encryption Service        +----+      |
+    +--------------------------+    |      |
+    +--------------------------+    |      |
+    |Bulk Storage Node (Go|IPFS+----+      |
+    +--------------------------+    +------+
+
 # Planned / Additional Features
 - File handling / API. Would like to implement the ability to upload the data from the Client side.
 - Client Side Mutual Authentication to allow connectivity to encryption/storage service. 
