@@ -60,7 +60,7 @@ func update(id int, key string, value string) {
 func main() {
 
 	fmt.Println("Storing encrypted files on the blockchain...Adding to Swarm.")
-	sh := shell.NewShell("localhost:5001")
+	sh := shell.NewShell("datanode:5001")
 
 	e, _ := os.Open(".decrypt")
 	defer e.Close()
