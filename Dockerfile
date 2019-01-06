@@ -7,7 +7,9 @@ RUN go get -d -v ./...
 # Skip compiling files for now.
 # RUN go install -v ./...
 
-cmd ["go run cryptapi.go"]
+RUN go build cryptapi.go
+
+cmd ["./cryptapi.go"]
 
 
 # Skip launching services for now.
