@@ -9,7 +9,7 @@ RUN go get -d -v ./...
 
 RUN go build cryptapi.go
 
-cmd ["./cryptapi"]
+CMD ["./cryptapi"]
 
 # Skip launching services for now.
 #cmd ["app"]
