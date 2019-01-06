@@ -14,7 +14,7 @@ import (
 )
 
 func get(key string) bool {
-	connStr := "postgres://docker:password@db/filehashes?sslmode=disable"
+	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
