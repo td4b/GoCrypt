@@ -14,7 +14,7 @@ import (
 )
 
 func get(key string) bool {
-	connStr := "user=docker password=docker dbname=filehashes sslmode=disable"
+	connStr := "pghost=db user=docker password=docker dbname=filehashes sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
@@ -41,7 +41,7 @@ func get(key string) bool {
 }
 
 func update(id int, key string, value string) {
-	connStr := "user=docker password=docker dbname=filehashes sslmode=disable"
+	connStr := "pghost=db user=docker password=docker dbname=filehashes sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
