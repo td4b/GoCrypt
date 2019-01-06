@@ -15,7 +15,7 @@ type jsondata struct {
 }
 
 func apicall(w http.ResponseWriter, r *http.Request) {
-	connStr := "user=docker password=docker dbname=filehashes sslmode=disable"
+	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
@@ -50,5 +50,5 @@ func apicall(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/api/", apicall)
-	log.Fatal(http.ListenAndServe("0.0.0.0:8000", nil))
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
