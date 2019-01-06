@@ -14,6 +14,8 @@ services:
       - db
     depends_on:
       - db
+    stdin_open: true
+    tty: true
     ports:
     - 8000:8000
     # entrypoint: ["/usr/local/src/security_monkey/docker/api-start.sh"]
