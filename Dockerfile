@@ -4,4 +4,8 @@ WORKDIR /go/src/app
 COPY . .
 
 RUN go get -d -v ./...
-RUN go install -v ./...
+# Skip compiling files for now.
+# RUN go install -v ./...
+
+# Skip launching services for now.
+#cmd ["app"]
