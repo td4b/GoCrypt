@@ -10,7 +10,7 @@
 `When your afraid of forgetting a bunch of secrets.`<p>
 `Keep one in you're head.`<p>
 `With AES256 bit encryption, expedient they said!`
-  
+
 # Description
 This is a CLI tool for encyrpting and uploading files to the IPFS blockchain network. The tool also generates unique file signatures and records them in a local database for one to keep track of the files. The reason behind this is due to the nature of AES256, at some point potentially a second block chain could be leveraged to track (file uniqueness). This would be the "Public" or non-confidential metadata assosciated with a file. The data will be nearly impossible to decrypt unless the client has the private key since the encryption method is symmetric (AES256).
 
@@ -38,11 +38,19 @@ This is a CLI tool for encyrpting and uploading files to the IPFS blockchain net
 
 @@ GoCrypt @@
 - Migrate additional Services over to Containers.
-- Need to implement multiple API's & MicroServices to suppor this.
+- Need to implement multiple API's & MicroServices to support this.
+- Remove I/O Based Encryption method and implement an HTTP interface for this.
+```bash
+curl -X POST \
+    'http://localhost:8008/workers' \
+    -H 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyIsInR5cGUiOiJhY2Nlc3MifQ.eyJ1c2VySWQiOjEsImFjY291bnRJZCI6MSwiaWF0IjoxNTExMzMwMzg5LCJleHAiOjE1MTM5MjIzODksImF1ZCI6Imh0dHBzOi8veW91cmRvbWFpbi5jb20iLCJpc3MiOiJmZWF0aGVycyIsInN1YiI6ImFub255bW91cyJ9.HWk7qJ0uK6SEi8qSeeB6-TGslDlZOTpG51U6kVi8nYc' \
+    -H 'content-type: application/x-www-form-urlencoded' \
+    --data-binary '@/home/Downloads/secret -encrypted_file.csv.aes'
+```
 
 @@ IPFS @@
 - Configure Data Caching.
-- Configure Private Node Network (SSL Verification). 
+- Configure Private Node Network (SSL Verification).
 
 @@ Database @@
 - Configure SSL Security.
@@ -52,5 +60,5 @@ This is a CLI tool for encyrpting and uploading files to the IPFS blockchain net
 # Planned / Additional Features
 - Convert each service into a microservice!
 - File handling / API. Would like to implement the ability to upload the data from the Client side.
-- Client Side Mutual Authentication to allow connectivity to encryption/storage service. 
+- Client Side Mutual Authentication to allow connectivity to encryption/storage service.
 - API Interface to easily view storage metadata information and query attributes of specific files.
