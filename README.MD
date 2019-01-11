@@ -49,7 +49,7 @@ curl -X POST \
 ```
 
 @@ IPFS @@
-- Configure Data Caching.
+- Configure Persistent Data Caching.
 - Configure Private Node Network (SSL Verification).
 
 @@ Database @@
