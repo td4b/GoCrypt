@@ -22,7 +22,7 @@ This is a CLI tool for encyrpting and uploading files to the IPFS blockchain net
 # TODO.
 
 @@ GoCrypt @@
-- Migrate additional Sercurlvices over to Containers.
+- Migrate additional Services over to Containers.
 - Need to implement multiple API's & MicroServices to support this.
 - Remove I/O Based Encryption method and implement an HTTP interface for this.
 ```bash
