@@ -22,15 +22,11 @@ This is a CLI tool for encyrpting and uploading files to the IPFS blockchain net
 # TODO.
 
 @@ GoCrypt @@
-- Migrate additional Services over to Containers.
+- Migrate additional Sercurlvices over to Containers.
 - Need to implement multiple API's & MicroServices to support this.
 - Remove I/O Based Encryption method and implement an HTTP interface for this.
 ```bash
-curl -X POST \
-    'http://localhost:8008/workers' \
-    -H 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyIsInR5cGUiOiJhY2Nlc3MifQ.eyJ1c2VySWQiOjEsImFjY291bnRJZCI6MSwiaWF0IjoxNTExMzMwMzg5LCJleHAiOjE1MTM5MjIzODksImF1ZCI6Imh0dHBzOi8veW91cmRvbWFpbi5jb20iLCJpc3MiOiJmZWF0aGVycyIsInN1YiI6ImFub255bW91cyJ9.HWk7qJ0uK6SEi8qSeeB6-TGslDlZOTpG51U6kVi8nYc' \
-    -H 'content-type: application/x-www-form-urlencoded' \
-    --data-binary '@/home/Downloads/secret -encrypted_file.csv.aes'
+ curl --request POST --data-binary "@secret.pem" http://192.168.0.215:8000/upload/ 
 ```
 
 @@ IPFS @@
