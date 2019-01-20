@@ -3,8 +3,11 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -14,7 +17,8 @@ type jsondata struct {
 	Hash string
 }
 
-func apicall(w http.ResponseWriter, r *http.Request) {
+func getdata() {
+	var w http.ResponseWriter
 	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -39,16 +43,40 @@ func apicall(w http.ResponseWriter, r *http.Request) {
 		data := jsondata{fileid, ipfshash}
 		js, err := json.Marshal(data)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+			log.Fatal(err)
 		}
-
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
 	}
 }
 
+func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	file, err := os.Create("./result")
+	if err != nil {
+		panic(err)
+	}
+	n, err := io.Copy(file, r.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	w.Write([]byte(fmt.Sprintf("%d bytes are recieved.\n", n)))
+}
+
+func apicall(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		switch r.RequestURI {
+		case "/api/":
+			getdata()
+		}
+	} else {
+		http.Error(w, "404 not found.", http.StatusNotFound)
+		return
+	}
+}
+
 func main() {
 	http.HandleFunc("/api/", apicall)
+	http.HandleFunc("/upload/", uploadHandler)
 	log.Fatal(http.ListenAndServe("0.0.0.0:8000", nil))
 }
