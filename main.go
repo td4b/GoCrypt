@@ -58,7 +58,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	data := crypt.Encrypt(bodyBytes, strings.Split(keys, "=")[1])
 	w.Write([]byte("Received File, Encrypting Data.\n"))
-	fileid := strings.Split(keys, "=")[0] + ":" + crypt.Signature(data)
+	fileid := strings.Split(keys, "=")[0] + ":" + crypt.Signature(bodyBytes)
 	if cryptstore.Get(fileid) == true {
 		fmt.Println("File has already been uploaded to database..")
 	} else {
