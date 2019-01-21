@@ -2,6 +2,7 @@ package main
 
 import (
 	"GoCrypt/crypt"
+	"GoCrypt/cryptstore"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -56,11 +57,15 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	keys := strings.Split(r.URL.Path, "/")[2]
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	data := crypt.Encrypt(bodyBytes, strings.Split(keys, "=")[1])
-	fmt.Println("Encrypting File: " + strings.Split(keys, "=")[0])
-	w.Write([]byte("Payload:\n"))
-	w.Write(data)
+	w.Write([]byte("Received File, Encrypting Data.\n"))
+	fileid := strings.Split(keys, "=")[0] + ":" + crypt.Signature(data)
+	if cryptstore.Get(fileid) == true {
+		fmt.Println("File has already been uploaded to database..")
+	} else {
+		fmt.Println("Didnt find file Signature.. Uploading..")
+		cryptstore.Store(fileid, data)
+	}
 }
-
 func apicall(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		switch r.RequestURI {

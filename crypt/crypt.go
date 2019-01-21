@@ -25,7 +25,7 @@ func sha1Hash(key string) string {
 	return hash
 }
 
-func signature(data []byte) string {
+func Signature(data []byte) string {
 	factor := len(data) / 256
 	var sig string
 	for i := 1; i <= 256; i++ {
