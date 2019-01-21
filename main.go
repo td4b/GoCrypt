@@ -4,11 +4,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+	"strings"
 
+	crypt "./crypt"
 	_ "github.com/lib/pq"
 )
 
@@ -51,16 +52,14 @@ func getdata() {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
-	file, err := os.Create("./result")
-	if err != nil {
-		panic(err)
-	}
-	n, err := io.Copy(file, r.Body)
-	if err != nil {
-		panic(err)
-	}
-
-	w.Write([]byte(fmt.Sprintf("%d bytes are recieved.\n", n)))
+	// This needs to have better URL parsing implemented...
+	keys := strings.Split(strings.Split(r.URL.Path, "/")[2], "=")
+	secretkey := keys[1]
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	fmt.Println("Key:" + secretkey)
+	fmt.Println("Body:" + string(bodyBytes))
+	data := crypt.Encrypt(bodyBytes, secretkey)
+	fmt.Println("Encrypted: " + string(data))
 }
 
 func apicall(w http.ResponseWriter, r *http.Request) {

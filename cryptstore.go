@@ -1,4 +1,4 @@
-package main
+package Crypstore
 
 import (
 	"bufio"
@@ -13,7 +13,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func get(key string) bool {
+func Get(key string) bool {
 	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
@@ -40,7 +40,7 @@ func get(key string) bool {
 	return false
 }
 
-func update(id int, key string, value string) {
+func Update(id int, key string, value string) {
 	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
@@ -57,7 +57,7 @@ func update(id int, key string, value string) {
 	}
 }
 
-func main() {
+func Store() {
 
 	fmt.Println("Storing encrypted files on the blockchain...Adding to Swarm.")
 	sh := shell.NewShell("datanode:5001")
@@ -77,7 +77,7 @@ func main() {
 		}
 
 		fmt.Printf("\n(%d) File:Hash = %s \n(%d) ipfs.Hash = %s", count, scanner.Text(), count, hash)
-		if get(scanner.Text()) == true {
+		if Get(scanner.Text()) == true {
 			continue
 		} else {
 			update(count, scanner.Text(), hash)

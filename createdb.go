@@ -1,11 +1,12 @@
-package main
+package createdb
 
 import (
 	"database/sql"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func main() {
+func create() {
 	db, _ := sql.Open("sqlite3", "./data.db")
 	sqlStmt := `
         create table filemaps (id integer not null primary key, fileid text, ipfshash text);
