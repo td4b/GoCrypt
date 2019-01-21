@@ -1,14 +1,15 @@
 package main
 
 import (
+	"GoCrypt/crypt"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
 
-	crypt "./crypt"
 	_ "github.com/lib/pq"
 )
 
@@ -52,12 +53,10 @@ func getdata() {
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	// This needs to have better URL parsing implemented...
-	keys := strings.Split(strings.Split(r.URL.Path, "/")[2], "?")
-	filename := keys[1]
-	secretkey := keys[2]
+	keys := strings.Split(r.URL.Path, "/")[2]
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	data := crypt.Encrypt(bodyBytes, secretkey)
-	w.Write([]byte("Got FileName: " + filename))
+	data := crypt.Encrypt(bodyBytes, strings.Split(keys, "=")[1])
+	fmt.Println("Encrypting File: " + strings.Split(keys, "=")[0])
 	w.Write([]byte("Payload:\n"))
 	w.Write(data)
 }
