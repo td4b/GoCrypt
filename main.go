@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -53,13 +52,14 @@ func getdata() {
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	// This needs to have better URL parsing implemented...
-	keys := strings.Split(strings.Split(r.URL.Path, "/")[2], "=")
-	secretkey := keys[1]
+	keys := strings.Split(strings.Split(r.URL.Path, "/")[2], "?")
+	filename := keys[1]
+	secretkey := keys[2]
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	fmt.Println("Key:" + secretkey)
-	fmt.Println("Body:" + string(bodyBytes))
 	data := crypt.Encrypt(bodyBytes, secretkey)
-	fmt.Println("Encrypted: " + string(data))
+	w.Write([]byte("Got FileName: " + filename))
+	w.Write([]byte("Payload:\n"))
+	w.Write(data)
 }
 
 func apicall(w http.ResponseWriter, r *http.Request) {
