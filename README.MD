@@ -25,8 +25,17 @@ This is a CLI tool for encyrpting and uploading files to the IPFS blockchain net
 - Migrate additional Services over to Containers.
 - Need to implement multiple API's & MicroServices to support this.
 - Remove I/O Based Encryption method and implement an HTTP interface for this.
+
+@@ Sending a File @@
 ```bash
- curl --request POST --data-binary "@secret.pem" http://192.168.0.215:8000/upload/secret.pem=secretpassword
+ curl --request POST --data-binary "@secret.pem" \
+      http://192.168.0.215:8000/upload/secret.pem=secretpassword
+```
+
+@@ Getting a File List @@
+
+```bash
+http://192.168.0.215:8000/api/
 ```
 
 @@ IPFS @@
