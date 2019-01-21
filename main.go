@@ -19,39 +19,6 @@ type jsondata struct {
 	Hash string
 }
 
-func getdata() {
-	var w http.ResponseWriter
-	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	rows, err := db.Query("SELECT id, fileid, ipfshash FROM filemaps")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var id int
-		var fileid string
-		var ipfshash string
-		err = rows.Scan(&id, &fileid, &ipfshash)
-		if err != nil {
-			log.Fatal(err)
-		}
-		data := jsondata{fileid, ipfshash}
-		js, err := json.Marshal(data)
-		if err != nil {
-			log.Fatal(err)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(js)
-	}
-}
-
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	// This needs to have better URL parsing implemented...
 	keys := strings.Split(r.URL.Path, "/")[2]
@@ -70,7 +37,36 @@ func apicall(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		switch r.RequestURI {
 		case "/api/":
-			getdata()
+			connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
+			db, err := sql.Open("postgres", connStr)
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer db.Close()
+
+			rows, err := db.Query("SELECT id, fileid, ipfshash FROM filemaps")
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer rows.Close()
+
+			for rows.Next() {
+				var id int
+				var fileid string
+				var ipfshash string
+				err = rows.Scan(&id, &fileid, &ipfshash)
+				if err != nil {
+					log.Fatal(err)
+				}
+				data := jsondata{fileid, ipfshash}
+				js, err := json.Marshal(data)
+				if err != nil {
+					log.Fatal(err)
+				}
+				w.Header().Set("Content-Type", "application/json")
+				w.Write(js)
+
+			}
 		}
 	} else {
 		http.Error(w, "404 not found.", http.StatusNotFound)

@@ -12,46 +12,51 @@ import (
 )
 
 func Get(key string) bool {
-	connStr := "postgres://docker:docker@192.168.0.215/filehashes?sslmode=disable"
+	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
-	rows, err := db.Query("SELECT fileid, ipfshash FROM filemaps")
+	rows, err := db.Query("SELECT id, fileid, ipfshash FROM filemaps")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 	for rows.Next() {
+		var id int
 		var fileid string
 		var ipfshash string
-		err = rows.Scan(&fileid, &ipfshash)
+		err = rows.Scan(&id, &fileid, &ipfshash)
 		if err != nil {
 			log.Fatal(err)
 		}
 		if key == fileid {
-			return true
+			return false
 		}
 	}
 	return false
 }
 
 func Update(key string, value string) {
-	connStr := "postgres://docker:docker@192.168.0.215/filehashes?sslmode=disable"
+	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
-	//sqlStatement := `
-	//INSERT INTO filemaps (fileid, ipfshash)
-	//VALUES ($1, $2)
-	//RETURNING id`
-	//err = db.QueryRow(sqlStatement, key, value).Scan(&key)
-	//if err != nil {
-	//	panic(err)
-	//}
+
+	// need to find ID dynamically for now it's static..
+
+	sqlStatement := `
+	INSERT INTO filemaps (id, fileid, ipfshash)
+	VALUES ($1, $2, $3)
+	`
+	id := 1
+	_, err = db.Exec(sqlStatement, id, key, value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func Store(filehash string, data []byte) {
