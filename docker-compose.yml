@@ -18,7 +18,6 @@ services:
     tty: true
     ports:
     - 8000:8000
-    # entrypoint: ["/usr/local/src/security_monkey/docker/api-start.sh"]
   datanode:
     container_name: ipfs_node
     image: ipfs/go-ipfs:latest
