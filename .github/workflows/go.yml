@@ -32,9 +32,10 @@ jobs:
         tag_with_ref: true
 
     - name: Move Dockerfile to root.
-      run: mv database/Dockerfile .
+      run: |
+        mv database/Dockerfile .
+        mv database/init.sql .
 
-    - uses: docker/setup-buildx-action@v1
     - name: Build and Push DB Image.
       uses: docker/build-push-action@v1
       with:
