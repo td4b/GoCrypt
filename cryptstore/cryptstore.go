@@ -8,9 +8,10 @@ import (
 	"strings"
 
 	shell "github.com/ipfs/go-ipfs-api"
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // Blank import required for pq lib.
 )
 
+// Get key for db values.
 func Get(key string) bool {
 	connStr := "postgres://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)

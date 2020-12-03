@@ -1,8 +1,6 @@
 package main
 
 import (
-	"GoCrypt/crypt"
-	"GoCrypt/cryptstore"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -12,6 +10,8 @@ import (
 	"strings"
 
 	_ "github.com/lib/pq"
+	"main.go/crypt"
+	"main.go/cryptstore"
 )
 
 type jsondata struct {
