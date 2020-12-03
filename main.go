@@ -38,7 +38,7 @@ func apicall(w http.ResponseWriter, r *http.Request) {
 		switch r.RequestURI {
 		case "/api/":
 			connStr := "gocryptdb-svc://docker:docker@db/filehashes?sslmode=disable"
-			db, err := sql.Open("gocryptdb-svc", connStr)
+			db, err := sql.Open("postgres", connStr)
 			if err != nil {
 				log.Fatal(err)
 			}
