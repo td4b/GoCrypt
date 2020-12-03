@@ -25,19 +25,18 @@ jobs:
     - name: Build and Push App Image.
       uses: docker/build-push-action@v1
       with:
+        file: ./Dockerfile
         username: td4b
         password: ${{ secrets.GITLAB_TOKEN }}
         registry: registry.gitlab.com
         repository: td4b/images/gocryptapp
         tag_with_ref: true
 
-    - name: Navigate to DB Docker Build dir.
-      run: cd database
-
     - uses: docker/setup-buildx-action@v1
     - name: Build and Push DB Image.
       uses: docker/build-push-action@v1
       with:
+        file: ./database/Dockerfile
         username: td4b
         password: ${{ secrets.GITLAB_TOKEN }}
         registry: registry.gitlab.com
