@@ -13,7 +13,7 @@ import (
 
 // Get key for db values.
 func Get(key string) bool {
-	connStr := "gocryptdb-svc://docker:docker@db/filehashes?sslmode=disable"
+	connStr := "gocryptapp-svc.backend-services.svc.cluster.local://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
@@ -40,7 +40,7 @@ func Get(key string) bool {
 }
 
 func Update(key string, value string) {
-	connStr := "gocryptdb-svc://docker:docker@db/filehashes?sslmode=disable"
+	connStr := "gocryptapp-svc.backend-services.svc.cluster.local://docker:docker@db/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
