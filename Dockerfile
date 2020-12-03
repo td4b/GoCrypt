@@ -1,15 +1,11 @@
 FROM golang:latest
 
-WORKDIR /go/src/GoCrypt
+RUN mkdir /app
+WORKDIR /app
 COPY . .
+RUN go build -o main .
 
-RUN go get -d -v ./...
-# Skip compiling files for now.
-# RUN go install -v ./...
-
-
-# Skip launching services for now.
-#cmd ["app"]
+CMD ["/app/main"]
 
 # Allow API to be exposed.
 EXPOSE 8000
