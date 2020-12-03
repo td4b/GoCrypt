@@ -25,6 +25,7 @@ jobs:
     - name: Build and Push App Image.
       uses: docker/build-push-action@v1
       with:
+        context: .
         file: ./Dockerfile
         username: td4b
         password: ${{ secrets.GITLAB_TOKEN }}
@@ -36,6 +37,7 @@ jobs:
     - name: Build and Push DB Image.
       uses: docker/build-push-action@v1
       with:
+        context: .
         file: ./database/Dockerfile
         username: td4b
         password: ${{ secrets.GITLAB_TOKEN }}
