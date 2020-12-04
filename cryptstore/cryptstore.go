@@ -65,7 +65,7 @@ func Update(key string, value string) {
 func Store(client string, filehash string, data []byte) {
 
 	log.Println("Storing encrypted files on the blockchain...Adding to Swarm.")
-	sh := shell.NewShell("gocrypt-ipfs:5001")
+	sh := shell.NewShell("ipfs-svc:5001")
 
 	ipfshash, err := sh.Add(strings.NewReader(string(data)))
 
