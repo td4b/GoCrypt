@@ -13,7 +13,7 @@ import (
 
 // Get key for db values.
 func Get(key string) bool {
-	connStr := "postgres://docker:docker@gocryptapp-svc/filehashes?sslmode=disable"
+	connStr := "postgres://docker:docker@gocryptdb-svc/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
@@ -33,14 +33,15 @@ func Get(key string) bool {
 			log.Fatal(err)
 		}
 		if key == fileid {
-			return false
+			return true
 		}
 	}
 	return false
 }
 
+// Update .. hash
 func Update(key string, value string) {
-	connStr := "postgres://docker:docker@gocryptapp-svc/filehashes?sslmode=disable"
+	connStr := "postgres://docker:docker@gocryptdb-svc/filehashes?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	defer db.Close()
 	if err != nil {
@@ -60,10 +61,11 @@ func Update(key string, value string) {
 	}
 }
 
-func Store(filehash string, data []byte) {
+// Store .. Hash
+func Store(client string, filehash string, data []byte) {
 
-	fmt.Println("Storing encrypted files on the blockchain...Adding to Swarm.")
-	sh := shell.NewShell("ipfs-svc:5001")
+	log.Println("Storing encrypted files on the blockchain...Adding to Swarm.")
+	sh := shell.NewShell("gocrypt-ipfs:5001")
 
 	ipfshash, err := sh.Add(strings.NewReader(string(data)))
 
@@ -71,8 +73,6 @@ func Store(filehash string, data []byte) {
 		fmt.Fprintf(os.Stderr, "error: %s", err)
 		os.Exit(1)
 	}
-
-	fmt.Printf("File:Hash = (%s) ipfs.Hash = %s", filehash, ipfshash)
+	log.Printf("srcIP("+client+") -File:Hash = (%s) ipfs.Hash = %s", filehash, ipfshash)
 	Update(filehash, ipfshash)
-	fmt.Println("\nProcess completed.")
 }

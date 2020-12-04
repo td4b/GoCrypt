@@ -4,38 +4,21 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	"crypto/sha1"
 	"crypto/sha256"
-	"encoding/hex"
 	"io"
 	"log"
 )
 
-func createHash(key string) string {
-	hasher := sha256.New()
-	hasher.Write([]byte(key))
-	hash := hex.EncodeToString(hasher.Sum(nil))
-	return hash[0 : len(hash)/2]
+// Signature is..
+func Signature(data []byte) []byte {
+	h := sha256.New()
+	h.Write(data)
+	return h.Sum(nil)
 }
 
-func sha1Hash(key string) string {
-	hasher := sha1.New()
-	hasher.Write([]byte(key))
-	hash := hex.EncodeToString(hasher.Sum(nil))
-	return hash
-}
-
-func Signature(data []byte) string {
-	factor := len(data) / 256
-	var sig string
-	for i := 1; i <= 256; i++ {
-		sig += string(data[factor*i : len(data)])
-	}
-	return sha1Hash(sig)
-}
-
-func Encrypt(data []byte, passphrase string) []byte {
-	block, err := aes.NewCipher([]byte(createHash(passphrase)))
+// Encrypt is..
+func Encrypt(data []byte, passphrase []byte) []byte {
+	block, err := aes.NewCipher(Signature(passphrase))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -49,8 +32,9 @@ func Encrypt(data []byte, passphrase string) []byte {
 	return ciphertext
 }
 
-func Decrypt(data []byte, passphrase string) []byte {
-	block, err := aes.NewCipher([]byte(createHash(passphrase)))
+// Decrypt is..
+func Decrypt(data []byte, passphrase []byte) []byte {
+	block, err := aes.NewCipher(Signature(passphrase))
 	if err != nil {
 		log.Fatal(err)
 	}

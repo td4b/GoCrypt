@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gocrypt-app
+  namespace: default
+  labels:
+    app: gocrypt-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gocrypt-app
+  template:
+    metadata:
+      labels:
+        app: gocrypt-app
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: gocrypt-app
+        image: registry.gitlab.com/td4b/images/gocryptapp
+        command: ["/bin/sh","-c"]
+        args:
+        - while true;do echo hello;done
+        ports:
+        - containerPort: 8000
+        
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gocryptapp-svc
+  namespace: default
+spec:
+  selector:
+    app: gocrypt-app
+  ports:
+    - port: 8000
+      targetPort: 8000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gocrypt-db
+  namespace: default
+  labels:
+    app: gocrypt-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gocrypt-db
+  template:
+    metadata:
+      labels:
+        app: gocrypt-db
+    spec:
+      containers:
+      - name: gocrypt-db
+        image: registry.gitlab.com/td4b/images/gocryptdb
+        ports:
+        - containerPort: 5432
+      imagePullSecrets:
+      - name: gitlab-registry
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gocryptdb-svc
+  namespace: default
+spec:
+  selector:
+    app: gocrypt-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+    
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gocrypt-ipfs
+  namespace: default
+  labels:
+    app: gocrypt-ipfs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gocrypt-ipfs
+  template:
+    metadata:
+      labels:
+        app: gocrypt-ipfs
+    spec:
+      containers:
+      - name: gocrypt-ipfs
+        image: ipfs/go-ipfs:latest
+        ports:
+        - containerPort: 5001
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipfs-svc
+  namespace: default
+spec:
+  selector:
+    app: gocrypt-ipfs
+  ports:
+    - port: 5001
+      targetPort: 5001
