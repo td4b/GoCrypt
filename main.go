@@ -85,5 +85,5 @@ func main() {
 	log.Println("[*] Starting GoCrypt -- Server listening on -- 8000")
 	http.HandleFunc("/api/", apicall)
 	http.HandleFunc("/upload/", uploadHandler)
-	log.Fatal(http.ListenAndServe("0.0.0.0:8888", nil))
+	log.Fatal(http.ListenAndServe("0.0.0.0:8000", nil))
 }
